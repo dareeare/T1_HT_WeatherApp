@@ -5,9 +5,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.logging.Logger;
 
 @Component
 public class WeatherProducer {
+    private final Logger log = Logger.getLogger(WeatherProducer.class.getName());
     private final KafkaTemplate<String, WeatherData> kafkaTemplate;
     private final GenerateWeatherData dataGenerator;
 
@@ -20,9 +22,9 @@ public class WeatherProducer {
         WeatherData wd = dataGenerator.getWeatherData();
         try {
             kafkaTemplate.send("weather-topic", wd.getCity(), wd);
-            System.out.println("Produced weather data: " + wd);
+            log.info("Data was generated");
         } catch (Exception e) {
-            System.out.println("ERROR weather data: " + wd);
+            log.severe("ERROR with generating data: ");
         }
 
     }

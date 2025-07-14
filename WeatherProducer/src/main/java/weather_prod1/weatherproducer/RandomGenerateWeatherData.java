@@ -17,11 +17,12 @@ public class RandomGenerateWeatherData implements GenerateWeatherData {
 
     @Override
     public WeatherData getWeatherData() {
-        WeatherData wd = new WeatherData(
-                CITIES.get(random.nextInt(CITIES.size())),
-                LocalDate.now().minusDays(random.nextInt(7)),
-                random.nextInt(36),
-                CONDITIONS.get(random.nextInt(CONDITIONS.size())));
+        String city = CITIES.get(random.nextInt(CITIES.size()));
+        String condition = CONDITIONS.get(random.nextInt(CONDITIONS.size()));
+        int temperature = random.nextInt(36);
+        LocalDate localDate = LocalDate.now().minusDays(random.nextInt(7));
+        WeatherData wd = new WeatherData(city, localDate, temperature, condition);
+        log.info("New weather data generated: " + city + ", " + localDate.toString() + ", " + condition + ", " + temperature + ", ");
         return wd;
     }
 }

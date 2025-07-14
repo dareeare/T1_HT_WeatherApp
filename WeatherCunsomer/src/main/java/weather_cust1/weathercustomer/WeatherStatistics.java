@@ -1,12 +1,14 @@
-package WeatherCustomer.src.main.java.weather_cust1.weathercustomer;
+package WeatherCunsomer.src.main.java.weather_cust1.weathercustomer;
 
 import weather_prod1.weatherproducer.WeatherData;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public class WeatherStatistics {
+    private final Logger log = Logger.getLogger(WeatherStatistics.class.getName());
     private double totalTemp = 0;
     private int count = 0;
     private int minTemp = Integer.MAX_VALUE;
@@ -21,18 +23,20 @@ public class WeatherStatistics {
     private boolean lastDayRainy = false;
     private Set<LocalDate> processedDates = new HashSet<>();
 
-    void update(WeatherData data) {
+    public void update(WeatherData data) {
 
         if (data.getTemperature() < minTemp) {
             minTemp = data.getTemperature();
             minTempDate = data.getTimestamp();
             minTempCity = data.getCity();
+            log.info("New min temperature is " + minTemp + " in " + minTempCity);
         }
 
         if (data.getTemperature() > maxTemp) {
             maxTemp = data.getTemperature();
             maxTempDate = data.getTimestamp();
             maxTempCity = data.getCity();
+            log.info("New max temperature is " + maxTemp + " in " + maxTempCity);
         }
 
         if (!processedDates.contains(data.getTimestamp())) {
@@ -44,13 +48,18 @@ public class WeatherStatistics {
                     || data.getCondition().equals("Cloudy")
                     || data.getCondition().equals("Overcast")) {
                 goodDays++;
+                log.info("New good day in " + data.getCity());
             }
 
             if (data.getCondition().equals("Rainy")
                     || data.getCondition().equals("Windy")
                     || data.getCondition().equals("Rainstorm")) {
                 badDays++;
+                log.info("New bad day in " + data.getCity());
+            }
 
+            if (count % 10 == 0) {
+                log.info(getStatistics());
             }
         }
     }
@@ -62,6 +71,7 @@ public class WeatherStatistics {
         sb.append("Max temperature: " + maxTemp + " - was " + maxTempDate.toString() + " in " + maxTempCity + "\n");
         sb.append("Good days: " + goodDays + "\n");
         sb.append("Bad days: " + badDays + "\n");
+        sb.append("========END========\n");
 
         return sb.toString();
     }
