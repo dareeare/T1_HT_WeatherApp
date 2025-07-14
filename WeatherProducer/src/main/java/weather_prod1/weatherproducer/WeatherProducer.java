@@ -22,9 +22,9 @@ public class WeatherProducer {
         WeatherData wd = dataGenerator.getWeatherData();
         try {
             kafkaTemplate.send("weather-topic", wd.getCity(), wd);
-            log.info("Data was generated");
+            log.info("Data was sent");
         } catch (Exception e) {
-            log.severe("ERROR with generating data: ");
+            log.severe("ERROR sending data");
         }
 
     }

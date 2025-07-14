@@ -22,7 +22,7 @@ public class RandomGenerateWeatherData implements GenerateWeatherData {
         int temperature = random.nextInt(36);
         LocalDate localDate = LocalDate.now().minusDays(random.nextInt(7));
         WeatherData wd = new WeatherData(city, localDate, temperature, condition);
-        log.info("New weather data generated: " + city + ", " + localDate.toString() + ", " + condition + ", " + temperature + ", ");
+        log.info("New weather data generated: " + city + ", " + localDate.toString() + ", " + condition + ", " + temperature);
         return wd;
     }
 }
